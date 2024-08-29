@@ -23,7 +23,7 @@ body {
   background-color: rgb(130, 176, 225);
 }
 
-.logo-box {
+.logo-box { 
   display: flex;
   align-items: center;
 }
@@ -38,3 +38,21 @@ body {
   font-weight: 400;
   letter-spacing: 0.5px;
 }
+
+/* dialog styling */
+
+form{
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container{
+  display: flex;
+  gap:20px;
+}
+
+.button-container button{
+  margin-top: 10px;
+  flex-grow: 1;
+}
+

@@ -1,8 +1,8 @@
-import './style.css'
-import { DOMManager } from './DOMManager'
+import "./style.css";
+import { DOMManager } from "./DOMManager";
 
-const runApplication = function(){
-    const domManager = new DOMManager()
-}
+const runApplication = function () {
+  const domManager = new DOMManager();
+};
 
-runApplication()
+runApplication();
