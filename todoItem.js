@@ -8,6 +8,7 @@ class ToDoItem {
     this.status;
     this.isComplete = false;
     this.dataAttribute;
+    this.id;
     this.setStatus();
   }
   // set status according to priority and date

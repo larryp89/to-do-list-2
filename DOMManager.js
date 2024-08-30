@@ -1,5 +1,6 @@
 import { ToDoItem } from "./todoItem";
 import { ToDoManager } from "./ToDoManager";
+import { DialogManager } from "./DialogManager";
 import { format } from "date-fns";
 
 class DOMManager {
@@ -56,8 +57,25 @@ class DOMManager {
         this.showTodoList();
       }
 
-      if(event.target.matches(".edit-to-do-button")){
-        console.log("edit clcked")
+      if (event.target.matches(".edit-to-do-button")) {
+        const id = parseInt(event.target.getAttribute("data-id"));
+        const toDo = this.toDoManager.toDoList[id];
+        const dialog = this.generateUpdateDialog(toDo);
+        this.mainDiv.append(dialog);
+        this.showFormDialog(dialog);
+      }
+    
+    // TODO: correct the expand
+      if (event.target.matches(".expand-button")) {
+        const details = document.querySelector(".details-span");
+        this.toggleTodo(details);
+      }
+
+      if (event.target.matches(".update-button")) {
+        event.preventDefault();
+        const id = parseInt(event.target.getAttribute("data-id"));
+        console.log("clicked")
+
       }
     });
   }
@@ -119,11 +137,23 @@ class DOMManager {
     date.textContent = `Complete by: ${todo.date}`;
     titleDateDiv.appendChild(date);
 
+    const details = document.createElement("span");
+    details.classList = "details-span";
+    details.textContent = `Details: ${todo.description}`;
+    details.setAttribute("hidden", "true");
+    titleDateDiv.append(details);
+
     toDoWrapper.appendChild(titleDateDiv);
+
+    const expandButton = document.createElement("button");
+    expandButton.textContent = "*";
+    expandButton.className = "expand-button";
+    toDoWrapper.appendChild(expandButton);
 
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
     editButton.className = "edit-to-do-button";
+    editButton.setAttribute("data-id", todo.id);
     toDoWrapper.appendChild(editButton);
 
     const deleteButton = document.createElement("button");
@@ -159,6 +189,103 @@ class DOMManager {
 
   clearPage() {
     this.mainDiv.innerHTML = "";
+  }
+
+  toggleTodo(div) {
+    div.toggleAttribute("hidden");
+  }
+
+  generateUpdateDialog(todo) {
+    // Create dialog & form
+    const updateDialog = document.createElement("dialog");
+    updateDialog.classList.add("to-do-dialog");
+
+    const updateForm = document.createElement("form");
+    updateForm.setAttribute("action", "");
+
+    // Title
+    const titleLabel = document.createElement("label");
+    titleLabel.setAttribute("for", "title");
+    titleLabel.textContent = "Title";
+    const titleInput = document.createElement("input");
+    titleInput.setAttribute("type", "text");
+    titleInput.setAttribute("id", "title");
+    titleInput.value = todo.name;
+
+    // Details
+    const detailsLabel = document.createElement("label");
+    detailsLabel.setAttribute("for", "details");
+    detailsLabel.textContent = "Details";
+    const detailsInput = document.createElement("textarea");
+    detailsInput.setAttribute("name", "details");
+    detailsInput.setAttribute("id", "details");
+    detailsInput.value = todo.description;
+
+    // Priority
+    const priorityLabel = document.createElement("label");
+    priorityLabel.setAttribute("for", "priority");
+    priorityLabel.textContent = "Priority";
+    const selectPriority = document.createElement("select");
+    selectPriority.setAttribute("name", "priority");
+    selectPriority.setAttribute("id", "priority");
+
+    const firstOption = document.createElement("option");
+    firstOption.setAttribute("value", "not important");
+    firstOption.textContent = "Not Important";
+    const secondOption = document.createElement("option");
+    secondOption.setAttribute("value", "important");
+    secondOption.textContent = "Important";
+    if (todo.priority === "important") {
+      secondOption.setAttribute("selected", "selected");
+    } else {
+      firstOption.setAttribute("selected", "selected");
+    }
+
+    selectPriority.appendChild(firstOption);
+    selectPriority.appendChild(secondOption);
+
+    // Due Date
+    const dueDateLabel = document.createElement("label");
+    dueDateLabel.setAttribute("for", "due-date");
+    dueDateLabel.textContent = "Due on";
+    const dateSelect = document.createElement("input");
+    dateSelect.setAttribute("type", "date");
+    dateSelect.setAttribute("id", "due-date");
+    const toDoDate = new Date(todo.date).toISOString().split("T")[0];
+    dateSelect.value = toDoDate;
+
+    // Buttons
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
+
+    const UpdateButton = document.createElement("button");
+    UpdateButton.classList.add("update-button");
+    UpdateButton.setAttribute("data-id", todo.id);
+    UpdateButton.textContent = "Update";
+
+    const cancelButton = document.createElement("button");
+    cancelButton.classList.add("recancel-to-do");
+    cancelButton.textContent = "Cancel";
+
+    buttonContainer.appendChild(UpdateButton);
+    buttonContainer.appendChild(cancelButton);
+
+    // Append elements to form
+    updateForm.appendChild(titleLabel);
+    updateForm.appendChild(titleInput);
+    updateForm.appendChild(detailsLabel);
+    updateForm.appendChild(detailsInput);
+    updateForm.appendChild(priorityLabel);
+    updateForm.appendChild(selectPriority);
+    updateForm.appendChild(dueDateLabel);
+    updateForm.appendChild(dateSelect);
+    updateForm.appendChild(buttonContainer);
+
+    // Append form to dialog
+    updateDialog.appendChild(updateForm);
+
+    // Append dialog to body
+    return updateDialog;
   }
 }
 

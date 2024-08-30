@@ -19,6 +19,17 @@ class ToDoManager {
     });
     console.log(this.toDoList);
   }
+
+  editToDo(id, title, description, duedate, priority) {
+    for (let todo of this.toDoList) {
+      if (todo.id === id) {
+        todo.name = title;
+        todo.description = description;
+        todo.date = duedate;
+        todo.priority = priority;
+      }
+    }
+  }
 }
 
 export { ToDoManager };
