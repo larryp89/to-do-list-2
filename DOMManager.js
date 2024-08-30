@@ -1,12 +1,13 @@
 import { ToDoItem } from "./todoItem";
 import { ToDoManager } from "./ToDoManager";
+import {format} from 'date-fns'
 
 class DOMManager {
   constructor() {
     this.toDoDialog = document.querySelector(".to-do-dialog");
     this.projectDialog = document.querySelector(".project-dialog");
     this.initializeEventListeners();
-    this.toDoManager = new ToDoManager()
+    this.toDoManager = new ToDoManager();
   }
 
   initializeEventListeners() {
@@ -27,8 +28,9 @@ class DOMManager {
       submitToDoButton.addEventListener("click", (event) => {
         event.preventDefault();
         this.closeFormDialog(this.toDoDialog);
-        this.getToDoData();
+        this.toDoManager.addToDO(this.getToDoData());
         this.clearToDoForm();
+        console.log(this.toDoManager.toDoList)
       });
     }
 
@@ -81,12 +83,16 @@ class DOMManager {
   }
 
   getToDoData() {
-    // get form data and create toDo 
+    // get form data and create toDo
     const title = document.querySelector("#title").value;
     const details = document.querySelector("#details").value;
     const priority = document.querySelector("#priority").value;
     const dueDate = document.querySelector("#due-date").value;
-    const newTodo = new ToDoItem(title, details, priority, dueDate);
+
+    // convert & tidy due date
+    const formattedDate = format(new Date(dueDate), 'MM/dd/yyyy')
+    const newTodo = new ToDoItem(title, details, priority, formattedDate);
+    return newTodo;
   }
 }
 

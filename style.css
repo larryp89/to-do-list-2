@@ -12,23 +12,39 @@ body {
   height: 100vh;
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-area: main;
+  background-color: rgb(130, 176, 225);
+}
+
+.main h1, h2, h3{
+  margin-bottom: 0px;
+}
+
+.main-logo{
+  fill:white;
+  height:fit-content;
+  height: 40rem;
+  margin: 0px;
+  padding: 0px;
+}
+
 .nav-bar {
   grid-area: nav;
   background-color: rgb(156, 200, 156);
   padding: 20px 20px;
 }
 
-.main {
-  grid-area: main;
-  background-color: rgb(130, 176, 225);
-}
-
-.logo-box { 
+.logo-box {
   display: flex;
   align-items: center;
+  margin-bottom: 50px;
 }
 
-.logo {
+.logo-small {
   height: 40px;
   fill: white;
 }
@@ -41,18 +57,17 @@ body {
 
 /* dialog styling */
 
-form{
+form {
   display: flex;
   flex-direction: column;
 }
 
-.button-container{
+.button-container {
   display: flex;
-  gap:20px;
+  gap: 20px;
 }
 
-.button-container button{
+.button-container button {
   margin-top: 10px;
   flex-grow: 1;
 }
-

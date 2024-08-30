@@ -8,6 +8,20 @@
   </head>
   <body>
     <div class="main-wrapper">
+      <main class="main">
+        <h1>Welcome to Prioritise.</h1>
+        <h2>Organise your tasks using the priority matrix</h2>
+        <h3>View tasks by priority or project</h3>
+        <svg
+          class="main-logo"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 3 24 24"
+        >
+          <path
+            d="M3,5H9V11H3V5M5,7V9H7V7H5M11,7H21V9H11V7M11,15H21V17H11V15M5,20L1.5,16.5L2.91,15.09L5,17.17L9.59,12.59L11,14L5,20Z"
+          />
+        </svg>
+      </main>
       <dialog class="to-do-dialog">
         <form action="">
           <label for="title">Title</label>
@@ -16,12 +30,11 @@
           <textarea name="details" id="details"></textarea>
           <label for="priority">Priority</label>
           <select name="priority" id="priority">
-            <option value="low">Low</option>
-            <option value="medium" selected>Medium</option>
-            <option value="high">High</option>
+            <option value="not important">Not Important</option>
+            <option value="important" selected>Important</option>
           </select>
           <label for="due-date">Due on</label>
-          <input type="date" id="due-date" class="due-date" />
+          <input type="date" id="due-date" />
           <div class="button-container">
             <button class="submit-to-do">Submit</button>
             <button class="cancel-to-do">Cancel</button>
@@ -31,7 +44,7 @@
       <nav class="nav-bar">
         <div class="logo-box">
           <svg
-            class="logo"
+            class="logo-small"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
           >
@@ -62,7 +75,6 @@
           <h3>Current Projects</h3>
         </div>
       </nav>
-      <main class="main"></main>
     </div>
     <script type="module" src="./main.js"></script>
   </body>
