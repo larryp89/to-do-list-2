@@ -1,8 +1,8 @@
 import "./style.css";
-import { DOMManager } from "./DOMManager";
+import { UIManager } from "./UIManager";
 
 const runApplication = function () {
-  const domManager = new DOMManager();
+  const domManager = new UIManager();
 };
 
 runApplication();
