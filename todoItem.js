@@ -7,7 +7,8 @@ class ToDoItem {
     this.date = dueDate;
     this.status;
     this.isComplete = false;
-    this.setStatus()
+    this.dataAttribute;
+    this.setStatus();
   }
   // set status according to priority and date
   setStatus() {
