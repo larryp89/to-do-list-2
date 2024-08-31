@@ -81,9 +81,9 @@ class FormManager {
     const thirdOption = document.createElement("option");
     thirdOption.setAttribute("value", "Low");
     thirdOption.textContent = "Low";
-    if (todo.priority === "high") {
+    if (todo.priority === "High") {
       firstOption.setAttribute("selected", "selected");
-    } else if (todo.priority === "medium") {
+    } else if (todo.priority === "Medium") {
       secondOption.setAttribute("selected", "selected");
     } else {
       thirdOption.setAttribute("selected", "selected");

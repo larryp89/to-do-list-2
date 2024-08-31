@@ -59,7 +59,7 @@ class UIManager {
         // get the data-id and use it to delete the to from array
         const id = parseInt(event.target.getAttribute("data-id"));
         this.toDoManager.deleteToDo(id);
-        this.toDoManager.assignID()
+        this.toDoManager.assignID();
         this.showTodoList();
       }
 
@@ -75,7 +75,8 @@ class UIManager {
 
       // TODO: correct the expand
       if (event.target.matches(".expand-button")) {
-        const details = document.querySelector(".details-span");
+        const toDoWrapper = event.target.closest(".to-do-wrapper");
+        const details = toDoWrapper.querySelector(".details-span");
         this.toggleTodo(details);
       }
 
@@ -92,13 +93,13 @@ class UIManager {
 
       if (event.target.matches(".recancel-to-do")) {
         event.preventDefault();
-        this.formManager.clearAddToDoForm();
-        this.dialogManager.closeDialog(this.dialogManager.updateDialog);
+        this.formManager.clearForm(this.formManager.updateToDoForm);
+        this.dialogManager.closeDialog(this.dialogManager.updateToDoDialog);
       }
     });
 
     this.dialogManager.addToDoDialog.addEventListener("cancel", (event) => {
-      this.formManager.clearAddToDoForm();
+      this.formManager.clearForm(this.formManager.addToDoForm);
     });
   }
 
@@ -146,6 +147,7 @@ class UIManager {
     const expandButton = document.createElement("button");
     expandButton.textContent = "*";
     expandButton.className = "expand-button";
+    expandButton.setAttribute("data-id", todo.id);
     toDoWrapper.appendChild(expandButton);
 
     const editButton = document.createElement("button");
@@ -169,18 +171,15 @@ class UIManager {
     const yellow = "rgb(237 242 145)";
     const blue = "rgb(88, 206, 224)";
     const green = "rgb(43, 173, 11";
-    switch (todo.status) {
-      case "Urgent":
+    switch (todo.priority) {
+      case "High":
         toDoWrapper.style.backgroundColor = red;
         break;
-      case "Non-urgent":
+      case "Medium":
         toDoWrapper.style.backgroundColor = yellow;
         break;
-      case "Delegate":
+      case "Low":
         toDoWrapper.style.backgroundColor = blue;
-        break;
-      case "Discard":
-        toDoWrapper.style.backgroundColor = green;
         break;
     }
   }
@@ -191,20 +190,6 @@ class UIManager {
 
   toggleTodo(div) {
     div.toggleAttribute("hidden");
-  }
-
-  generateUpdateDialog(form) {
-    // Create dialog & form
-    const updateDialog = document.createElement("dialog");
-    updateDialog.classList.add("update-to-do-dialog");
-    // Append form to dialog
-    updateDialog.appendChild(form);
-    updateDialog.addEventListener("cancel", (event) => {
-      this.formManager.clearAddToDoForm();
-      console.log("cleared");
-    });
-
-    return updateDialog;
   }
 }
 
