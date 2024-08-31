@@ -1,14 +1,16 @@
 import { format } from "date-fns";
 
 class FormManager {
-  constructor() {}
+  constructor() {
+    this.addToDoForm = document.querySelector(".add-to-do-form");
+    this.updateToDoForm;
+  }
 
-  getFormData() {
-    // get form data and create toDo
-    const title = document.querySelector("#title").value;
-    const details = document.querySelector("#details").value;
-    const priority = document.querySelector("#priority").value;
-    const dueDate = document.querySelector("#due-date").value;
+  getFormData(form) {
+    const title = form.querySelector("#title").value;
+    const details = form.querySelector("#details").value;
+    const priority = form.querySelector("#priority").value;
+    const dueDate = form.querySelector("#due-date").value;
 
     // convert & tidy due date
     const date = format(new Date(dueDate), "MM/dd/yyyy");
@@ -16,14 +18,29 @@ class FormManager {
     return { title, details, priority, date };
   }
 
-  clearAddToDoForm() {
-    document.querySelector("#title").value = "";
-    document.querySelector("#details").value = "";
+  getAddFormData() {
+    return this.getFormData(this.addToDoForm);
   }
 
-  clearProjectForm() {
-    document.querySelector(".project-name").value = "";
+  getUpdateFormData() {
+    return this.getFormData(this.updateToDoForm);
   }
+
+  clearForm(form) {
+    form.reset();
+  }
+
+  clearAddForm() {
+    this.clearForm(this.addToDoForm);
+  }
+
+  clearUpdateForm() {
+    this.clearForm(this.updateToDoForm);
+  }
+
+  // clearProjectForm() {
+  //   document.querySelector(".project-name").value = "";
+  // }
 
   createUpdateForm(todo) {
     const updateForm = document.createElement("form");
@@ -56,19 +73,25 @@ class FormManager {
     selectPriority.setAttribute("id", "priority");
 
     const firstOption = document.createElement("option");
-    firstOption.setAttribute("value", "not important");
-    firstOption.textContent = "Not Important";
+    firstOption.setAttribute("value", "High");
+    firstOption.textContent = "High`";
     const secondOption = document.createElement("option");
-    secondOption.setAttribute("value", "important");
-    secondOption.textContent = "Important";
-    if (todo.priority === "important") {
+    secondOption.setAttribute("value", "Medium");
+    secondOption.textContent = "Medium";
+    const thirdOption = document.createElement("option");
+    thirdOption.setAttribute("value", "Low");
+    thirdOption.textContent = "Low";
+    if (todo.priority === "high") {
+      firstOption.setAttribute("selected", "selected");
+    } else if (todo.priority === "medium") {
       secondOption.setAttribute("selected", "selected");
     } else {
-      firstOption.setAttribute("selected", "selected");
+      thirdOption.setAttribute("selected", "selected");
     }
 
     selectPriority.appendChild(firstOption);
     selectPriority.appendChild(secondOption);
+    selectPriority.appendChild(thirdOption);
 
     // Due Date
     const dueDateLabel = document.createElement("label");
@@ -107,6 +130,7 @@ class FormManager {
     updateForm.appendChild(dateSelect);
     updateForm.appendChild(buttonContainer);
 
+    this.updateToDoForm = updateForm;
     return updateForm;
   }
 }

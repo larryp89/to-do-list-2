@@ -1,3 +1,5 @@
+import { format, differenceInCalendarDays } from "date-fns";
+
 class ToDoManager {
   constructor() {
     this.toDoList = [];
@@ -28,6 +30,21 @@ class ToDoManager {
         todo.date = duedate;
         todo.priority = priority;
       }
+    }
+  }
+  // set status according to priority and date
+  setStatus(todo) {
+    const today = format(new Date(), "MM/dd/yyyy");
+    const difference = differenceInCalendarDays(todo.date, today);
+
+    if (todo.priority === "important" && difference <= 2) {
+      todo.status = "Urgent";
+    } else if (todo.priority === "important" && difference > 2) {
+      todo.status = "Non-urgent";
+    } else if (todo.priority === "not important" && difference <= 3) {
+      todo.status = "Delegate";
+    } else if (todo.priority === "not important" && difference > 3) {
+      todo.status = "Discard";
     }
   }
 }

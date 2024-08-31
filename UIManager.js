@@ -3,13 +3,14 @@ import { ToDoManager } from "./ToDoManager";
 import { DialogManager } from "./DialogManager";
 import { FormManager } from "./FormManager";
 
+const MAINDIV = document.querySelector(".main");
+
 class UIManager {
   constructor() {
-    this.mainDiv = document.querySelector(".main");
     this.dialogManager = new DialogManager();
-    this.initializeEventListeners();
     this.toDoManager = new ToDoManager();
     this.formManager = new FormManager();
+    this.initializeEventListeners();
   }
 
   initializeEventListeners() {
@@ -20,53 +21,55 @@ class UIManager {
 
       if (event.target.matches(".submit-to-do")) {
         event.preventDefault();
-        this.dialogManager.closeDialog(this.dialogManager.addToDoDialog);
         const { title, details, priority, date } =
-          this.formManager.getFormData();
+          this.formManager.getAddFormData();
         const newTodo = new ToDoItem(title, details, priority, date);
+        // this.toDoManager.setStatus(newTodo);
         this.toDoManager.addToDO(newTodo);
         this.toDoManager.assignID();
-        this.formManager.clearAddToDoForm();
+        this.formManager.clearForm(this.formManager.addToDoForm);
+        this.dialogManager.closeDialog(this.dialogManager.addToDoDialog);
         this.clearPage();
         this.showTodoList();
       }
 
       if (event.target.matches(".cancel-to-do")) {
         event.preventDefault();
-        this.formManager.clearAddToDoForm();
+        this.formManager.clearForm(this.formManager.addToDoForm);
         this.dialogManager.closeDialog(this.dialogManager.addToDoDialog);
       }
 
-      if (event.target.matches(".add-project")) {
-        this.showFormDialog(this.projectDialog);
-      }
+      // if (event.target.matches(".add-project")) {
+      //   this.showFormDialog(this.projectDialog);
+      // }
 
-      if (event.target.matches(".create-project")) {
-        event.preventDefault();
-        this.closeFormDialog(this.projectDialog);
-        this.clearProjectForm();
-      }
+      // if (event.target.matches(".create-project")) {
+      //   event.preventDefault();
+      //   this.closeFormDialog(this.projectDialog);
+      //   this.clearProjectForm();
+      // }
 
-      if (event.target.matches(".cancel-project")) {
-        event.preventDefault();
-        this.closeFormDialog(this.projectDialog);
-        this.clearProjectForm();
-      }
+      // if (event.target.matches(".cancel-project")) {
+      //   event.preventDefault();
+      //   this.closeFormDialog(this.projectDialog);
+      //   this.clearProjectForm();
+      // }
 
       if (event.target.matches(".delete-to-do-button")) {
         // get the data-id and use it to delete the to from array
         const id = parseInt(event.target.getAttribute("data-id"));
         this.toDoManager.deleteToDo(id);
+        this.toDoManager.assignID()
         this.showTodoList();
       }
 
       if (event.target.matches(".edit-to-do-button")) {
         const id = parseInt(event.target.getAttribute("data-id"));
         const toDo = this.toDoManager.toDoList[id];
-        const dialog = this.dialogManager.generateUpdateDialog(
-          this.formManager.createUpdateForm(toDo)
-        );
-        this.mainDiv.append(dialog);
+        const updateForm = this.formManager.createUpdateForm(toDo);
+        const dialog = this.dialogManager.generateUpdateDialog();
+        dialog.appendChild(updateForm);
+        MAINDIV.append(dialog);
         this.dialogManager.showDialog(dialog);
       }
 
@@ -80,9 +83,8 @@ class UIManager {
         event.preventDefault();
         // get the ID of of the target(same as array index)
         const id = parseInt(event.target.getAttribute("data-id"));
-        //
         const { title, details, priority, date } =
-          this.formManager.getFormData();
+          this.formManager.getUpdateFormData();
         this.toDoManager.editToDo(id, title, details, date, priority);
         this.clearPage();
         this.showTodoList();
@@ -90,8 +92,13 @@ class UIManager {
 
       if (event.target.matches(".recancel-to-do")) {
         event.preventDefault();
-        console.log("clicked");
+        this.formManager.clearAddToDoForm();
+        this.dialogManager.closeDialog(this.dialogManager.updateDialog);
       }
+    });
+
+    this.dialogManager.addToDoDialog.addEventListener("cancel", (event) => {
+      this.formManager.clearAddToDoForm();
     });
   }
 
@@ -99,7 +106,8 @@ class UIManager {
     this.clearPage();
     // make a card for each todo
     for (let todo of this.toDoManager.toDoList) {
-      this.mainDiv.append(this.createToDoCard(todo));
+      this.toDoManager.setStatus(todo);
+      MAINDIV.append(this.createToDoCard(todo));
     }
   }
 
@@ -129,6 +137,11 @@ class UIManager {
     titleDateDiv.append(details);
 
     toDoWrapper.appendChild(titleDateDiv);
+
+    const priority = document.createElement("span");
+    priority.textContent = todo.priority;
+    priority.className = "priority-span";
+    toDoWrapper.appendChild(priority);
 
     const expandButton = document.createElement("button");
     expandButton.textContent = "*";
@@ -173,11 +186,25 @@ class UIManager {
   }
 
   clearPage() {
-    this.mainDiv.innerHTML = "";
+    MAINDIV.innerHTML = "";
   }
 
   toggleTodo(div) {
     div.toggleAttribute("hidden");
+  }
+
+  generateUpdateDialog(form) {
+    // Create dialog & form
+    const updateDialog = document.createElement("dialog");
+    updateDialog.classList.add("update-to-do-dialog");
+    // Append form to dialog
+    updateDialog.appendChild(form);
+    updateDialog.addEventListener("cancel", (event) => {
+      this.formManager.clearAddToDoForm();
+      console.log("cleared");
+    });
+
+    return updateDialog;
   }
 }
 
