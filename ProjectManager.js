@@ -8,12 +8,6 @@ class ProjectManager {
   addEntry(todo) {
     this.projectToDos.push(todo);
   }
-
-  showEntries() {
-    for (let todo of this.projectToDos) {
-      console.log(todo);
-    }
-  }
 }
 
 export { ProjectManager };

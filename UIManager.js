@@ -16,6 +16,7 @@ class UIManager {
     this.toDoManager = new ToDoManager();
     this.formManager = new FormManager();
     this.projects = [];
+    this.currentProjectName = null;
 
     this.initializeEventListeners();
   }
@@ -25,17 +26,18 @@ class UIManager {
       if (event.target.matches(".home-group")) {
         this.showHome();
       }
-      // priority event listeners
+      // get by priority event listeners
       if (event.target.matches(".high-priority")) {
-        this.showHighPriority();
+        this.showTodoList(this.getHighPriority());
       }
       if (event.target.matches(".medium-priority")) {
-        this.showMediumPriority();
+        this.showTodoList(this.getMediumPriority());
       }
       if (event.target.matches(".low-priority")) {
-        this.showLowPriority();
+        this.showTodoList(this.getLowPriority());
       }
 
+      // add/submit event listeners
       if (event.target.matches(".add-to-do")) {
         this.dialogManager.showDialog(this.dialogManager.addToDoDialog);
       }
@@ -72,14 +74,53 @@ class UIManager {
         const newProject = new ProjectManager(
           this.formManager.getProjectName()
         );
+        this.currentProjectName = newProject.projectName;
+
+        // check project doesn't already exist
+        if (this.checkDuplicateProject(newProject)) {
+          alert("Cannot create duplicate project");
+          this.formManager.clearForm(this.formManager.projectName);
+          return;
+        }
+
         this.projects.push(newProject);
-        this.addProjectButton(newProject);
+        this.makeProjectContainer(newProject.projectName);
+        this.formManager.clearForm(this.formManager.projectName);
+      }
+
+      if (event.target.matches(".current-project-button")) {
+        event.preventDefault();
+        this.dialogManager.showDialog(this.dialogManager.projectToDoDialog);
+      }
+
+      if (event.target.matches(".submit-project-to-do")) {
+        event.preventDefault();
+        const { title, details, priority, date } =
+          this.formManager.getProjectFormData();
+
+        // create the todo for the project
+        const projectToDo = new ToDoItem(title, details, priority, date);
+
+        // set the project name
+        projectToDo.projectName = this.currentProjectName;
+
+        this.toDoManager.addToDO(projectToDo);
+        this.toDoManager.assignID();
         this.formManager.clearForm(this.formManager.projectForm);
+        this.dialogManager.closeDialog(this.dialogManager.projectToDoDialog);
+        this.showTodoList(this.getProject(this.currentProjectName));
+      }
+
+      // get project list when span is clicked
+      if (event.target.matches(".project-span")) {
+        const projectName = event.target.textContent;
+        this.showTodoList(this.getProject(projectName));
+        console.log("okay");
       }
 
       if (event.target.matches(".cancel-project")) {
         event.preventDefault();
-        this.formManager.clearForm(this.formManager.projectForm);
+        this.formManager.clearForm(this.formManager.projectName);
         this.dialogManager.closeDialog(this.dialogManager.addProjectDialog);
       }
 
@@ -114,7 +155,6 @@ class UIManager {
         const { title, details, priority, date } =
           this.formManager.getUpdateFormData();
         this.toDoManager.editToDo(id, title, details, date, priority);
-        this.clearPage();
         this.showTodoList(this.toDoManager.toDoList);
       }
 
@@ -219,36 +259,57 @@ class UIManager {
   }
 
   // Methods for Projects
-  addProjectButton(project) {
-    const button = document.createElement("button");
-    button.textContent = project.projectName;
-
-    // add event listener
-    button.addEventListener("click", () => project.showEntries());
-    CURRENTPROJECTS.appendChild(button);
-  }
 
   showHome() {
     this.showTodoList(this.toDoManager.toDoList);
   }
 
-  showHighPriority() {
+  getHighPriority() {
     const highPriority = this.toDoManager.toDoList.filter(
       (todo) => todo.priority === "High"
     );
-    this.showTodoList(highPriority);
+    return highPriority;
   }
-  showMediumPriority() {
+  getMediumPriority() {
     const MidPriority = this.toDoManager.toDoList.filter(
       (todo) => todo.priority === "Medium"
     );
-    this.showTodoList(MidPriority);
+    return MidPriority;
   }
-  showLowPriority() {
+  getLowPriority() {
     const lowPriority = this.toDoManager.toDoList.filter(
       (todo) => todo.priority === "Low"
     );
-    this.showTodoList(lowPriority);
+    return lowPriority;
+  }
+
+  getProject(projectName) {
+    return this.toDoManager.toDoList.filter(
+      (todo) => todo.projectName === projectName
+    );
+  }
+
+  checkDuplicateProject(project) {
+    for (let proj of this.projects) {
+      if (proj.projectName === project.projectName) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  makeProjectContainer(text) {
+    const container = document.createElement("div");
+    container.className = "div-container";
+    const projectSpan = document.createElement("span");
+    projectSpan.className = "project-span";
+    projectSpan.textContent = text;
+    const projectButton = document.createElement("button");
+    projectButton.className = "current-project-button";
+    projectButton.textContent = "+";
+    container.appendChild(projectSpan);
+    container.appendChild(projectButton);
+    CURRENTPROJECTS.append(container);
   }
 }
 

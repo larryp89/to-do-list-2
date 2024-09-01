@@ -2,6 +2,7 @@ class DialogManager {
   constructor() {
     this.addToDoDialog = document.querySelector(".to-do-dialog");
     this.addProjectDialog = document.querySelector(".project-dialog");
+    this.projectToDoDialog = document.querySelector(".project-to-do-dialog");
     this.updateToDoDialog;
   }
 
@@ -17,7 +18,7 @@ class DialogManager {
     const updateDialog = document.createElement("dialog");
     updateDialog.classList.add("update-to-do-dialog");
     this.updateToDoDialog = updateDialog;
-    return updateDialog
+    return updateDialog;
   }
 }
 

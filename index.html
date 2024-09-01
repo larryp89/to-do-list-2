@@ -62,8 +62,6 @@
         <h4 class="medium-priority">Medium Priority</h4>
         <h4 class="low-priority">Low Priority</h4>
 
-
-
         <div class="projects-section">
           <h3>Projects</h3>
           <button class="add-project">Add Project</button>
@@ -82,6 +80,26 @@
           </dialog>
           <h4 class="current-projects">Current Projects</h4>
         </div>
+        <dialog class="project-to-do-dialog">
+          <form class="project-add-to-do-form" action="">
+            <label for="title">Title</label>
+            <input type="text" id="title" />
+            <label for="details">Details</label>
+            <textarea name="details" id="details"></textarea>
+            <label for="priority">Priority</label>
+            <select name="priority" id="priority">
+              <option value="High">High</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Low">Low</option>
+            </select>
+            <label for="due-date">Due on</label>
+            <input type="date" id="due-date" />
+            <div class="button-container">
+              <button class="submit-project-to-do">Submit</button>
+              <button class="cancel-project-to-do">Cancel</button>
+            </div>
+          </form>
+        </dialog>
       </nav>
     </div>
     <script type="module" src="./main.js"></script>

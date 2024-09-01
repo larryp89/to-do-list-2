@@ -4,10 +4,9 @@ class ToDoItem {
     this.description = description;
     this.priority = priority;
     this.date = dueDate;
-    this.status;
     this.isComplete = false;
-    this.dataAttribute;
     this.id;
+    this.project;
   }
 }
 
