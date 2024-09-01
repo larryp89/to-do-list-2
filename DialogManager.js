@@ -1,8 +1,8 @@
 class DialogManager {
   constructor() {
     this.addToDoDialog = document.querySelector(".to-do-dialog");
+    this.addProjectDialog = document.querySelector(".project-dialog");
     this.updateToDoDialog;
-    // this.addProjectDialog = document.querySelector(".project-dialog");
   }
 
   showDialog(dialog) {

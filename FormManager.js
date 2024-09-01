@@ -3,6 +3,7 @@ import { format } from "date-fns";
 class FormManager {
   constructor() {
     this.addToDoForm = document.querySelector(".add-to-do-form");
+    this.projectForm = document.querySelector(".project-form");
     this.updateToDoForm;
   }
 
@@ -29,18 +30,6 @@ class FormManager {
   clearForm(form) {
     form.reset();
   }
-
-  clearAddForm() {
-    this.clearForm(this.addToDoForm);
-  }
-
-  clearUpdateForm() {
-    this.clearForm(this.updateToDoForm);
-  }
-
-  // clearProjectForm() {
-  //   document.querySelector(".project-name").value = "";
-  // }
 
   createUpdateForm(todo) {
     const updateForm = document.createElement("form");
@@ -132,6 +121,11 @@ class FormManager {
 
     this.updateToDoForm = updateForm;
     return updateForm;
+  }
+
+  getProjectName() {
+    const projectName = document.querySelector(".project-name").value;
+    return projectName;
   }
 }
 

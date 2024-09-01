@@ -2,19 +2,40 @@ import { ToDoItem } from "./todoItem";
 import { ToDoManager } from "./ToDoManager";
 import { DialogManager } from "./DialogManager";
 import { FormManager } from "./FormManager";
+import { ProjectManager } from "./ProjectManager";
 
 const MAINDIV = document.querySelector(".main");
+const HIGHPRIORITY = document.querySelector(".high-priority");
+const MEDIUMPRIORITY = document.querySelector(".medium-priority");
+const LOWPRIORITY = document.querySelector(".low-priority");
+const CURRENTPROJECTS = document.querySelector(".current-projects");
 
 class UIManager {
   constructor() {
     this.dialogManager = new DialogManager();
     this.toDoManager = new ToDoManager();
     this.formManager = new FormManager();
+    this.projects = [];
+
     this.initializeEventListeners();
   }
 
   initializeEventListeners() {
     document.body.addEventListener("click", (event) => {
+      if (event.target.matches(".home-group")) {
+        this.showHome();
+      }
+      // priority event listeners
+      if (event.target.matches(".high-priority")) {
+        this.showHighPriority();
+      }
+      if (event.target.matches(".medium-priority")) {
+        this.showMediumPriority();
+      }
+      if (event.target.matches(".low-priority")) {
+        this.showLowPriority();
+      }
+
       if (event.target.matches(".add-to-do")) {
         this.dialogManager.showDialog(this.dialogManager.addToDoDialog);
       }
@@ -24,13 +45,14 @@ class UIManager {
         const { title, details, priority, date } =
           this.formManager.getAddFormData();
         const newTodo = new ToDoItem(title, details, priority, date);
+
         // this.toDoManager.setStatus(newTodo);
         this.toDoManager.addToDO(newTodo);
         this.toDoManager.assignID();
         this.formManager.clearForm(this.formManager.addToDoForm);
         this.dialogManager.closeDialog(this.dialogManager.addToDoDialog);
         this.clearPage();
-        this.showTodoList();
+        this.showTodoList(this.toDoManager.toDoList);
       }
 
       if (event.target.matches(".cancel-to-do")) {
@@ -39,28 +61,34 @@ class UIManager {
         this.dialogManager.closeDialog(this.dialogManager.addToDoDialog);
       }
 
-      // if (event.target.matches(".add-project")) {
-      //   this.showFormDialog(this.projectDialog);
-      // }
+      if (event.target.matches(".add-project")) {
+        this.dialogManager.showDialog(this.dialogManager.addProjectDialog);
+      }
 
-      // if (event.target.matches(".create-project")) {
-      //   event.preventDefault();
-      //   this.closeFormDialog(this.projectDialog);
-      //   this.clearProjectForm();
-      // }
+      // create new project object
+      if (event.target.matches(".create-project")) {
+        event.preventDefault();
+        this.dialogManager.closeDialog(this.dialogManager.addProjectDialog);
+        const newProject = new ProjectManager(
+          this.formManager.getProjectName()
+        );
+        this.projects.push(newProject);
+        this.addProjectButton(newProject);
+        this.formManager.clearForm(this.formManager.projectForm);
+      }
 
-      // if (event.target.matches(".cancel-project")) {
-      //   event.preventDefault();
-      //   this.closeFormDialog(this.projectDialog);
-      //   this.clearProjectForm();
-      // }
+      if (event.target.matches(".cancel-project")) {
+        event.preventDefault();
+        this.formManager.clearForm(this.formManager.projectForm);
+        this.dialogManager.closeDialog(this.dialogManager.addProjectDialog);
+      }
 
       if (event.target.matches(".delete-to-do-button")) {
         // get the data-id and use it to delete the to from array
         const id = parseInt(event.target.getAttribute("data-id"));
         this.toDoManager.deleteToDo(id);
         this.toDoManager.assignID();
-        this.showTodoList();
+        this.showTodoList(this.toDoManager.toDoList);
       }
 
       if (event.target.matches(".edit-to-do-button")) {
@@ -73,7 +101,6 @@ class UIManager {
         this.dialogManager.showDialog(dialog);
       }
 
-      // TODO: correct the expand
       if (event.target.matches(".expand-button")) {
         const toDoWrapper = event.target.closest(".to-do-wrapper");
         const details = toDoWrapper.querySelector(".details-span");
@@ -88,7 +115,7 @@ class UIManager {
           this.formManager.getUpdateFormData();
         this.toDoManager.editToDo(id, title, details, date, priority);
         this.clearPage();
-        this.showTodoList();
+        this.showTodoList(this.toDoManager.toDoList);
       }
 
       if (event.target.matches(".recancel-to-do")) {
@@ -103,11 +130,10 @@ class UIManager {
     });
   }
 
-  showTodoList() {
+  showTodoList(toDoList) {
     this.clearPage();
     // make a card for each todo
-    for (let todo of this.toDoManager.toDoList) {
-      this.toDoManager.setStatus(todo);
+    for (let todo of toDoList) {
       MAINDIV.append(this.createToDoCard(todo));
     }
   }
@@ -190,6 +216,39 @@ class UIManager {
 
   toggleTodo(div) {
     div.toggleAttribute("hidden");
+  }
+
+  // Methods for Projects
+  addProjectButton(project) {
+    const button = document.createElement("button");
+    button.textContent = project.projectName;
+
+    // add event listener
+    button.addEventListener("click", () => project.showEntries());
+    CURRENTPROJECTS.appendChild(button);
+  }
+
+  showHome() {
+    this.showTodoList(this.toDoManager.toDoList);
+  }
+
+  showHighPriority() {
+    const highPriority = this.toDoManager.toDoList.filter(
+      (todo) => todo.priority === "High"
+    );
+    this.showTodoList(highPriority);
+  }
+  showMediumPriority() {
+    const MidPriority = this.toDoManager.toDoList.filter(
+      (todo) => todo.priority === "Medium"
+    );
+    this.showTodoList(MidPriority);
+  }
+  showLowPriority() {
+    const lowPriority = this.toDoManager.toDoList.filter(
+      (todo) => todo.priority === "Low"
+    );
+    this.showTodoList(lowPriority);
   }
 }
 

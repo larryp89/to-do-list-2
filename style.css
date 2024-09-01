@@ -115,3 +115,9 @@ form {
 .expand-button {
   margin-left: auto;
 }
+
+/* Current projects */
+.current-projects {
+  display: flex;
+  flex-direction: column;
+}
