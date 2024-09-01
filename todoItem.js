@@ -6,7 +6,7 @@ class ToDoItem {
     this.date = dueDate;
     this.isComplete = false;
     this.id;
-    this.project;
+    this.project = null
   }
 }
 

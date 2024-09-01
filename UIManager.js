@@ -17,7 +17,6 @@ class UIManager {
     this.formManager = new FormManager();
     this.projects = [];
     this.currentProjectName = null;
-
     this.initializeEventListeners();
   }
 
@@ -53,7 +52,6 @@ class UIManager {
         this.toDoManager.assignID();
         this.formManager.clearForm(this.formManager.addToDoForm);
         this.dialogManager.closeDialog(this.dialogManager.addToDoDialog);
-        this.clearPage();
         this.showTodoList(this.toDoManager.toDoList);
       }
 
@@ -74,7 +72,7 @@ class UIManager {
         const newProject = new ProjectManager(
           this.formManager.getProjectName()
         );
-        this.currentProjectName = newProject.projectName;
+        this.currentProjectName = this.formManager.getProjectName();
 
         // check project doesn't already exist
         if (this.checkDuplicateProject(newProject)) {
@@ -102,7 +100,7 @@ class UIManager {
         const projectToDo = new ToDoItem(title, details, priority, date);
 
         // set the project name
-        projectToDo.projectName = this.currentProjectName;
+        projectToDo.project = this.currentProjectName;
 
         this.toDoManager.addToDO(projectToDo);
         this.toDoManager.assignID();
@@ -115,7 +113,6 @@ class UIManager {
       if (event.target.matches(".project-span")) {
         const projectName = event.target.textContent;
         this.showTodoList(this.getProject(projectName));
-        console.log("okay");
       }
 
       if (event.target.matches(".cancel-project")) {
@@ -145,7 +142,9 @@ class UIManager {
       if (event.target.matches(".expand-button")) {
         const toDoWrapper = event.target.closest(".to-do-wrapper");
         const details = toDoWrapper.querySelector(".details-span");
+        const project = toDoWrapper.querySelector(".project-span");
         this.toggleTodo(details);
+        this.toggleTodo(project);
       }
 
       if (event.target.matches(".update-button")) {
@@ -202,6 +201,16 @@ class UIManager {
     details.textContent = `Details: ${todo.description}`;
     details.setAttribute("hidden", "true");
     titleDateDiv.append(details);
+
+    const project = document.createElement("span");
+    project.classList = "project-span";
+    if (!todo.project) {
+      const projectName = "Project: Unassigned";
+      project.textContent = projectName;
+    } else project.textContent = `Project: ${todo.project}`;
+
+    project.setAttribute("hidden", "true");
+    titleDateDiv.appendChild(project);
 
     toDoWrapper.appendChild(titleDateDiv);
 
@@ -285,7 +294,7 @@ class UIManager {
 
   getProject(projectName) {
     return this.toDoManager.toDoList.filter(
-      (todo) => todo.projectName === projectName
+      (todo) => todo.project == projectName
     );
   }
 
@@ -304,9 +313,9 @@ class UIManager {
     const projectSpan = document.createElement("span");
     projectSpan.className = "project-span";
     projectSpan.textContent = text;
-    const projectButton = document.createElement("button");
+    const projectButton = document.createElement("img");
     projectButton.className = "current-project-button";
-    projectButton.textContent = "+";
+    projectButton.src = "./pen-plus.svg";
     container.appendChild(projectSpan);
     container.appendChild(projectButton);
     CURRENTPROJECTS.append(container);

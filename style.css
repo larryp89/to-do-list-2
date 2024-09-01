@@ -43,11 +43,11 @@ h3 {
 .logo-box {
   display: flex;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .logo-small {
-  height: 40px;
+  height: 5rem;
   fill: white;
 }
 
@@ -55,6 +55,36 @@ h3 {
   color: white;
   font-weight: 400;
   letter-spacing: 0.5px;
+  font-size: 2rem;
+}
+
+/* buttons */
+.add-to-do,
+.add-project {
+  padding: 0.8rem;
+  margin-top: 1rem;
+}
+
+.current-project-button {
+  height: 2rem
+}
+
+/* list styling */
+.top-list {
+  list-style-type: none;
+  padding-left: 1rem;
+}
+
+.top-list li {
+  font-style: italic;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+}
+
+.top-list li:hover {
+  background-color: rgb(72, 109, 72);
+  cursor: pointer;
+  font-weight: bold;
 }
 
 /* dialog styling */
@@ -120,4 +150,30 @@ form {
 .current-projects {
   display: flex;
   flex-direction: column;
+}
+
+/* projects div */
+.div-container {
+  display: flex;
+  margin-top: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: solid black 1px;
+  padding: 0.5rem
+}
+
+.div-container span {
+  padding: 0.5rem;
+}
+.div-container span:hover {
+  background-color: rgb(72, 109, 72);
+  cursor: pointer;
+  width: 80%;
+}
+
+.div-container img{
+  cursor: pointer;
 }
