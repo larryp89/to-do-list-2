@@ -122,6 +122,7 @@ class UIManager {
 
       if (event.target.matches(".current-project-button")) {
         event.preventDefault();
+        this.currentPriority = null
         const projectName = event.target
           .closest(".div-container")
           .querySelector(".project-span").textContent;
@@ -352,7 +353,7 @@ class UIManager {
 
   setHeader() {
     const heading = document.createElement("h2");
-    heading.textContent = `Current list: ${this.toDoManager.getCurrentProject()}`;
+    heading.textContent = `Current Project: ${this.toDoManager.getCurrentProject()}`;
     MAINDIV.appendChild(heading);
   }
 
