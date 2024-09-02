@@ -63,6 +63,7 @@ class UIManager {
 
       // add/submit event listeners
       if (event.target.matches(".add-to-do")) {
+        this.currentPriority = null;
         this.toDoManager.setCurrentProject(DEAFULT_PROJECT_NAME);
         this.dialogManager.showDialog(this.dialogManager.addToDoDialog);
         console.log(this.toDoManager.getCurrentProject());
@@ -191,6 +192,7 @@ class UIManager {
         const project = toDoWrapper.querySelector(".project-span");
         this.toggleTodo(details);
         this.toggleTodo(project);
+        this.toggleImage(event.target);
       }
 
       if (event.target.matches(".update-button")) {
@@ -282,12 +284,12 @@ class UIManager {
     toDoWrapper.appendChild(titleDateDiv);
 
     const priority = document.createElement("span");
-    priority.textContent = todo.priority;
+    priority.textContent = `${todo.priority}`;
     priority.className = "priority-span";
     toDoWrapper.appendChild(priority);
 
     const expandButton = document.createElement("img");
-    expandButton.src = "./menu-down-outline.svg"
+    expandButton.src = "./menu-down-outline.svg";
     expandButton.className = "expand-button";
     expandButton.setAttribute("data-id", todo.id);
     toDoWrapper.appendChild(expandButton);
@@ -310,18 +312,18 @@ class UIManager {
   }
 
   setCardBackground(todo, toDoWrapper) {
-    const red = "rgb(227, 116, 116)";
+    const span = toDoWrapper.querySelector(".priority-span");
     const yellow = "rgb(237 242 145)";
     const blue = "rgb(88, 206, 224)";
     switch (todo.priority) {
       case "High":
-        toDoWrapper.style.backgroundColor = red;
+        span.style.border = "3px solid red";
         break;
       case "Medium":
-        toDoWrapper.style.backgroundColor = yellow;
+        span.style.border = "3px solid orange";
         break;
       case "Low":
-        toDoWrapper.style.backgroundColor = blue;
+        span.style.border = "3px solid green";
         break;
     }
   }
@@ -334,6 +336,14 @@ class UIManager {
     div.toggleAttribute("hidden");
   }
 
+  toggleImage(img) {
+    if (img.src.endsWith("menu-down-outline.svg")) {
+      img.src = "./menu-up.svg";
+    } else {
+      img.src = "./menu-down-outline.svg";
+    }
+  }
+
   checkDuplicateProject(project) {
     return this.toDoManager.allToDos.some(
       (proj) => proj.projectName === project
@@ -342,7 +352,7 @@ class UIManager {
 
   setHeader() {
     const heading = document.createElement("h2");
-    heading.textContent = `You are in: ${this.toDoManager.getCurrentProject()}`;
+    heading.textContent = `Current list: ${this.toDoManager.getCurrentProject()}`;
     MAINDIV.appendChild(heading);
   }
 
