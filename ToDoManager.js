@@ -1,30 +1,35 @@
-import { format, differenceInCalendarDays } from "date-fns";
-
+import { Project } from "./ProjectManager";
 // stores and manages all todo items
+
 class ToDoManager {
   constructor() {
-    this.toDoList = [];
+    this.allToDos = [];
+    this.projects = [];
+    this.currentProject = null;
   }
-  addToDO(todo) {
-    this.toDoList.push(todo);
-    console.log(this.toDoList);
+
+  // add todo to alltodos & Project instance todolist
+  addToDo(todo) {
+    this.allToDos.push(todo);
+    this.assignID();
+    console.log(this.allToDos);
+    this.getCurrentProject().addEntry(todo);
   }
 
   assignID() {
-    for (let todo of this.toDoList) {
-      todo.id = this.toDoList.indexOf(todo);
+    for (let todo of this.allToDos) {
+      todo.id = this.allToDos.indexOf(todo);
     }
   }
 
   deleteToDo(id) {
-    this.toDoList = this.toDoList.filter(function (toDo) {
-      return toDo.id !== id;
-    });
-    console.log(this.toDoList);
+    const todo = this.allToDos.find((todo) => todo.id === id);
+    this.getCurrentProject().removeToDo(todo);
+    this.allToDos = this.allToDos.filter((todo) => todo.id !== id);
   }
 
   editToDo(id, title, description, duedate, priority) {
-    for (let todo of this.toDoList) {
+    for (let todo of this.allToDos) {
       if (todo.id === id) {
         todo.name = title;
         todo.description = description;
@@ -33,21 +38,41 @@ class ToDoManager {
       }
     }
   }
-  // set status according to priority and date
-  // setStatus(todo) {
-  //   const today = format(new Date(), "MM/dd/yyyy");
-  //   const difference = differenceInCalendarDays(todo.date, today);
 
-  //   if (todo.priority === "important" && difference <= 2) {
-  //     todo.status = "Urgent";
-  //   } else if (todo.priority === "important" && difference > 2) {
-  //     todo.status = "Non-urgent";
-  //   } else if (todo.priority === "not important" && difference <= 3) {
-  //     todo.status = "Delegate";
-  //   } else if (todo.priority === "not important" && difference > 3) {
-  //     todo.status = "Discard";
-  //   }
-  // }
+  // create a project and add it to the list
+  createProject(projectName) {
+    const newProject = new Project(projectName);
+    this.projects.push(newProject);
+    return newProject;
+  }
+
+  // set the current project name
+  setCurrentProject(projectManager) {
+    this.currentProject = projectManager;
+  }
+
+  getCurrentProject() {
+    return this.currentProject;
+  }
+
+  // check for duplicate project
+  checkDuplicate(newProject) {
+    for (let proj of this.projects) {
+      if (proj.projectName === newProject) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  findProject(project) {
+    for (let proj of this.projects) {
+      if (proj.projectName === project) {
+        return proj;
+      }
+    }
+    return false;
+  }
 }
 
 export { ToDoManager };

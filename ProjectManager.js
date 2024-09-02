@@ -1,5 +1,5 @@
 // Class that retrieves todos
-class ProjectManager {
+class Project {
   constructor(projectName) {
     this.projectName = projectName;
     this.projectToDos = [];
@@ -8,6 +8,10 @@ class ProjectManager {
   addEntry(todo) {
     this.projectToDos.push(todo);
   }
+
+  removeToDo(toDoItem) {
+    this.projectToDos = this.projectToDos.filter((todo) => todo !== toDoItem);
+  }
 }
 
-export { ProjectManager };
+export { Project };
