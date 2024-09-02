@@ -1,4 +1,3 @@
-import { Project } from "./ProjectManager";
 // stores and manages all todo items
 
 class ToDoManager {
@@ -13,7 +12,6 @@ class ToDoManager {
     this.allToDos.push(todo);
     this.assignID();
     console.log(this.allToDos);
-    this.getCurrentProject().addEntry(todo);
   }
 
   assignID() {
@@ -23,8 +21,6 @@ class ToDoManager {
   }
 
   deleteToDo(id) {
-    const todo = this.allToDos.find((todo) => todo.id === id);
-    this.getCurrentProject().removeToDo(todo);
     this.allToDos = this.allToDos.filter((todo) => todo.id !== id);
   }
 
@@ -38,14 +34,6 @@ class ToDoManager {
       }
     }
   }
-
-  // create a project and add it to the list
-  createProject(projectName) {
-    const newProject = new Project(projectName);
-    this.projects.push(newProject);
-    return newProject;
-  }
-
   // set the current project name
   setCurrentProject(projectManager) {
     this.currentProject = projectManager;
@@ -55,20 +43,15 @@ class ToDoManager {
     return this.currentProject;
   }
 
+  addProject(projectName) {
+    this.projects.push(projectName);
+  }
+
   // check for duplicate project
   checkDuplicate(newProject) {
     for (let proj of this.projects) {
-      if (proj.projectName === newProject) {
+      if (proj === newProject) {
         return true;
-      }
-    }
-    return false;
-  }
-
-  findProject(project) {
-    for (let proj of this.projects) {
-      if (proj.projectName === project) {
-        return proj;
       }
     }
     return false;
