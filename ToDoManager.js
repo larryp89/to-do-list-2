@@ -1,4 +1,5 @@
 // stores and manages all todo items
+import { compareAsc } from "date-fns";
 
 class ToDoManager {
   constructor() {
@@ -12,6 +13,11 @@ class ToDoManager {
     this.allToDos.push(todo);
     this.assignID();
     console.log(this.allToDos);
+  }
+
+  // sort todo list by date
+  sortByDate() {
+    this.allToDos.sort((a,b)=>compareAsc(a.date, b.date))
   }
 
   assignID() {

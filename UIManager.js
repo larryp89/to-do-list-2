@@ -2,7 +2,6 @@ import { ToDoItem } from "./todoItem";
 import { ToDoManager } from "./ToDoManager";
 import { DialogManager } from "./DialogManager";
 import { FormManager } from "./FormManager";
-import { tr } from "date-fns/locale";
 
 const MAINDIV = document.querySelector(".main");
 const HIGHPRIORITY = document.querySelector(".high-priority");
@@ -122,7 +121,7 @@ class UIManager {
 
       if (event.target.matches(".current-project-button")) {
         event.preventDefault();
-        this.currentPriority = null
+        this.currentPriority = null;
         const projectName = event.target
           .closest(".div-container")
           .querySelector(".project-span").textContent;
@@ -223,7 +222,7 @@ class UIManager {
   showTodoList(projectName, priority = null) {
     this.clearPage();
     this.setHeader();
-
+    this.toDoManager.sortByDate()
     const toDoList = this.toDoManager.allToDos.filter(
       (item) =>
         item.project === projectName &&
