@@ -106,11 +106,12 @@ button {
 .top-list {
   list-style-type: none;
   padding-left: 1rem;
+  margin-top: 0.1rem;
 }
 
 .top-list li {
   font-style: italic;
-  padding: 0.5rem;
+  padding: 0.2rem;
   border-radius: 0.2rem;
   width: 80%;
 }
@@ -201,7 +202,7 @@ form textarea {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: fle;
   min-width: 50%;
   padding: 15px 30px;
   margin-top: 10px;
@@ -218,12 +219,12 @@ form textarea {
 }
 
 .title-span {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 500;
 }
 
 .date-span {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .priority-span {
@@ -231,6 +232,7 @@ form textarea {
   padding: 0.5rem 0;
   background-color: white;
   width: 120px; /* Set a fixed width */
+  height: 1.7rem;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -241,6 +243,7 @@ form textarea {
 .details-span,
 .project-span {
   flex-basis: 100%;
+    font-size: 1.2rem;
 }
 
 .expand-button,
@@ -262,7 +265,7 @@ form textarea {
   margin-top: 0.5rem;
   align-items: center;
   justify-content: space-between;
-  font-size: 1.rem;
+  font-size: 1rem;
   font-weight: 600;
   border: solid black 1px;
   padding: 0.5rem;
@@ -300,6 +303,10 @@ form textarea {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.add-project {
+  margin-top: 0.5rem;
 }
 
 .add-to-do:hover,
