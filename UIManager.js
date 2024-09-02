@@ -2,6 +2,7 @@ import { ToDoItem } from "./todoItem";
 import { ToDoManager } from "./ToDoManager";
 import { DialogManager } from "./DialogManager";
 import { FormManager } from "./FormManager";
+import { tr } from "date-fns/locale";
 
 const MAINDIV = document.querySelector(".main");
 const HIGHPRIORITY = document.querySelector(".high-priority");
@@ -127,9 +128,19 @@ class UIManager {
         this.dialogManager.showDialog(this.dialogManager.projectToDoDialog);
       }
 
+      if (event.target.matches(".trash-project-button")) {
+        const projecToDelete = event.target.closest(".div-container");
+        const projectName =
+          projecToDelete.querySelector(".project-span").textContent;
+        this.deleteProjectDiv(projecToDelete);
+        this.deleteProjectToDos(projectName);
+        this.deleteProject(projectName);
+      }
+
       if (event.target.matches(".project-span")) {
         const projecToShow = event.target.textContent;
         this.toDoManager.setCurrentProject(projecToShow);
+        console.log(this.toDoManager.getCurrentProject());
         this.showTodoList(this.toDoManager.getCurrentProject());
       }
 
@@ -230,7 +241,11 @@ class UIManager {
     this.clearPage();
     const emptyDiv = document.createElement("h1");
     emptyDiv.textContent = "Nothing to see here!";
+    const tumbleWeed = document.createElement("img");
+    tumbleWeed.src = "./tumbleweed.gif";
+    tumbleWeed.alt = "tumbleweed";
     MAINDIV.appendChild(emptyDiv);
+    MAINDIV.append(tumbleWeed);
   }
 
   createToDoCard(todo) {
@@ -271,21 +286,22 @@ class UIManager {
     priority.className = "priority-span";
     toDoWrapper.appendChild(priority);
 
-    const expandButton = document.createElement("button");
-    expandButton.textContent = "*";
+    const expandButton = document.createElement("img");
+    expandButton.src = "./menu-down-outline.svg"
     expandButton.className = "expand-button";
     expandButton.setAttribute("data-id", todo.id);
     toDoWrapper.appendChild(expandButton);
 
-    const editButton = document.createElement("button");
-    editButton.textContent = "Edit";
+    const editButton = document.createElement("img");
+    editButton.src = "./pencil.svg";
     editButton.className = "edit-to-do-button";
     editButton.setAttribute("data-id", todo.id);
     toDoWrapper.appendChild(editButton);
 
-    const deleteButton = document.createElement("button");
+    const deleteButton = document.createElement("img");
     deleteButton.textContent = "Delete";
     deleteButton.className = "delete-to-do-button";
+    deleteButton.src = "./trash-can-outline.svg";
     deleteButton.setAttribute("data-id", todo.id);
     toDoWrapper.appendChild(deleteButton);
 
@@ -326,7 +342,7 @@ class UIManager {
 
   setHeader() {
     const heading = document.createElement("h2");
-    heading.textContent = this.toDoManager.getCurrentProject();
+    heading.textContent = `You are in: ${this.toDoManager.getCurrentProject()}`;
     MAINDIV.appendChild(heading);
   }
 
@@ -339,9 +355,31 @@ class UIManager {
     const projectButton = document.createElement("img");
     projectButton.className = "current-project-button";
     projectButton.src = "./pen-plus.svg";
+    const trashButton = document.createElement("img");
+    trashButton.className = "trash-project-button";
+    trashButton.src = "./trash-can-outline.svg";
     container.appendChild(projectSpan);
     container.appendChild(projectButton);
+    container.append(trashButton);
     CURRENTPROJECTS.append(container);
+  }
+
+  deleteProjectToDos(projectName) {
+    // Filter out todos that belong to the project being deleted
+    this.toDoManager.allToDos = this.toDoManager.allToDos.filter(
+      (item) => item.project !== projectName
+    );
+  }
+
+  deleteProject(projectName) {
+    // Filter out the project being deleted from the projects list
+    this.toDoManager.projects = this.toDoManager.projects.filter(
+      (project) => project !== projectName
+    );
+  }
+
+  deleteProjectDiv(div) {
+    div.remove(); // Correctly removes the div element representing the project
   }
 }
 
