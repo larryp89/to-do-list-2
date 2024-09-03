@@ -18,11 +18,20 @@ class UIManager {
     this.currentPriority = null; // Track the currently selected priority
     this.initializeEventListeners();
     this.iniializeToDoManager();
+    this.loadProjects();
   }
 
   iniializeToDoManager() {
     this.toDoManager.setCurrentProject(DEAFULT_PROJECT_NAME);
     this.toDoManager.addProject(DEAFULT_PROJECT_NAME);
+  }
+
+  loadProjects() {
+    for (let project of this.toDoManager.projects) {
+      if (project !== "Home") {
+        this.makeProjectContainer(project);
+      }
+    }
   }
 
   initializeEventListeners() {
@@ -79,6 +88,9 @@ class UIManager {
         this.toDoManager.addToDo(newTodo);
         this.toDoManager.assignID();
 
+        // save locally
+        this.toDoManager.setLocalStorage();
+
         this.formManager.clearForm(this.formManager.addToDoForm);
         this.dialogManager.closeDialog(this.dialogManager.addToDoDialog);
 
@@ -134,8 +146,8 @@ class UIManager {
         const projectName =
           projecToDelete.querySelector(".project-span").textContent;
         this.deleteProjectDiv(projecToDelete);
-        this.deleteProjectToDos(projectName);
-        this.deleteProject(projectName);
+        this.toDoManager.deleteProjectToDos(projectName);
+        this.toDoManager.deleteProject(projectName);
       }
 
       if (event.target.matches(".project-span")) {
@@ -155,6 +167,9 @@ class UIManager {
 
         this.toDoManager.addToDo(projectToDo);
         this.showTodoList(this.toDoManager.getCurrentProject());
+
+        // add local storage
+        this.toDoManager.setLocalStorage();
 
         this.formManager.clearForm(this.formManager.projectForm);
         this.dialogManager.closeDialog(this.dialogManager.projectToDoDialog);
@@ -222,12 +237,23 @@ class UIManager {
   showTodoList(projectName, priority = null) {
     this.clearPage();
     this.setHeader();
-    this.toDoManager.sortByDate()
-    const toDoList = this.toDoManager.allToDos.filter(
-      (item) =>
-        item.project === projectName &&
-        (!priority || item.priority === priority)
-    );
+
+    this.toDoManager.sortByDate();
+    this.toDoManager.assignID();
+
+    let toDoList;
+
+    if (projectName === DEAFULT_PROJECT_NAME) {
+      toDoList = this.toDoManager.allToDos.filter(
+        (item) => !priority || item.priority === priority
+      );
+    } else {
+      toDoList = this.toDoManager.allToDos.filter(
+        (item) =>
+          item.project === projectName &&
+          (!priority || item.priority === priority)
+      );
+    }
 
     if (toDoList.length === 0) {
       this.showEmpty();
@@ -372,20 +398,6 @@ class UIManager {
     container.appendChild(projectButton);
     container.append(trashButton);
     CURRENTPROJECTS.append(container);
-  }
-
-  deleteProjectToDos(projectName) {
-    // Filter out todos that belong to the project being deleted
-    this.toDoManager.allToDos = this.toDoManager.allToDos.filter(
-      (item) => item.project !== projectName
-    );
-  }
-
-  deleteProject(projectName) {
-    // Filter out the project being deleted from the projects list
-    this.toDoManager.projects = this.toDoManager.projects.filter(
-      (project) => project !== projectName
-    );
   }
 
   deleteProjectDiv(div) {

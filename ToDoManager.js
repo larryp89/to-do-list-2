@@ -3,8 +3,12 @@ import { compareAsc } from "date-fns";
 
 class ToDoManager {
   constructor() {
-    this.allToDos = [];
-    this.projects = [];
+    this.allToDos = localStorage.getItem("todos")
+      ? JSON.parse(localStorage.getItem("todos"))
+      : [];
+    this.projects = localStorage.getItem("projects")
+      ? JSON.parse(localStorage.getItem("projects"))
+      : [];
     this.currentProject = null;
   }
 
@@ -12,12 +16,13 @@ class ToDoManager {
   addToDo(todo) {
     this.allToDos.push(todo);
     this.assignID();
+    this.setLocalStorage;
     console.log(this.allToDos);
   }
 
   // sort todo list by date
   sortByDate() {
-    this.allToDos.sort((a,b)=>compareAsc(a.date, b.date))
+    this.allToDos.sort((a, b) => compareAsc(a.date, b.date));
   }
 
   assignID() {
@@ -28,6 +33,7 @@ class ToDoManager {
 
   deleteToDo(id) {
     this.allToDos = this.allToDos.filter((todo) => todo.id !== id);
+    this.setLocalStorage();
   }
 
   editToDo(id, title, description, duedate, priority) {
@@ -39,6 +45,7 @@ class ToDoManager {
         todo.priority = priority;
       }
     }
+    this.setLocalStorage();
   }
   // set the current project name
   setCurrentProject(projectManager) {
@@ -51,6 +58,7 @@ class ToDoManager {
 
   addProject(projectName) {
     this.projects.push(projectName);
+    this.setLocalStorage();
   }
 
   // check for duplicate project
@@ -61,6 +69,37 @@ class ToDoManager {
       }
     }
     return false;
+  }
+
+  deleteProjectToDos(projectName) {
+    // Filter out todos that belong to the project being deleted
+    this.allToDos = this.allToDos.filter(
+      (item) => item.project !== projectName
+    );
+    this.setLocalStorage();
+  }
+
+  deleteProject(projectName) {
+    // Filter out the project being deleted from the projects list
+    this.projects = this.projects.filter((project) => project !== projectName);
+    this.setLocalStorage();
+  }
+
+  setLocalStorage() {
+    localStorage.setItem("todos", JSON.stringify(this.allToDos));
+    localStorage.setItem("projects", JSON.stringify(this.projects));
+  }
+
+  getLocalStorage() {
+    const storedTodos = JSON.parse(localStorage.getItem("todos"));
+    if (storedTodos) {
+      this.allToDos = storedTodos;
+    }
+
+    const storedProjects = JSON.parse(localStorage.getItem("projects"));
+    if (storedProjects) {
+      this.projects = storedProjects;
+    }
   }
 }
 
