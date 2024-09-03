@@ -10,6 +10,31 @@ class ToDoManager {
       ? JSON.parse(localStorage.getItem("projects"))
       : [];
     this.currentProject = null;
+    this.loadDefaultData()
+  }
+
+  loadDefaultData() {
+    if (this.projects.length === 0) {
+      // Add default projects
+      this.addProject("Home");
+      this.addProject("Work");
+
+      // Add default todos
+      this.addToDo({
+        name: "Buy groceries",
+        description: "Milk, Bread, Eggs",
+        date: "2024-09-04",
+        priority: "High",
+        project: "Home",
+      });
+      this.addToDo({
+        name: "Complete report",
+        description: "Finish the quarterly report",
+        date: "2024-09-05",
+        priority: "Medium",
+        project: "Work",
+      });
+    }
   }
 
   // add todo to alltodos & Project instance todolist

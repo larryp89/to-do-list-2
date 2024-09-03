@@ -19,6 +19,7 @@ class UIManager {
     this.initializeEventListeners();
     this.iniializeToDoManager();
     this.loadProjects();
+    this.showTodoList(DEAFULT_PROJECT_NAME)
   }
 
   iniializeToDoManager() {
