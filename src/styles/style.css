@@ -29,7 +29,7 @@ h3 {
   align-self: center;
 }
 
-h2{
+h2 {
   text-decoration: underline;
 }
 
@@ -208,11 +208,17 @@ form textarea {
   justify-content: space-between;
   align-items: fle;
   min-width: 50%;
-  padding: 5px 10px;
+  padding: 5px 20px 5px 10px;
   margin-top: 10px;
   border-radius: 5px;
   gap: 10px;
   background-color: #c1d4d7;
+}
+
+.icons-div {
+  flex: 1;
+  display: flex;
+  gap: 5px;
 }
 
 .title-date-div {
@@ -244,20 +250,18 @@ form textarea {
   align-items: center;
   margin: 0 10px; /* Add some margin for spacing */
 }
-.details-span{
+.details-span {
   margin-bottom: 10px;
+  margin-left: auto;
 }
 .details-span,
 .project-span {
   flex-basis: 100%;
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
-.expand-button,
-.edit-to-do-button,
-.delete-to-do-button {
-  flex: 0 0 auto;
-  margin-left: 10px;
+.expand-button {
+  margin-left: auto;
 }
 
 /* Current projects */
@@ -320,3 +324,4 @@ form textarea {
 .add-project:hover {
   border: 3px solid black;
 }
+

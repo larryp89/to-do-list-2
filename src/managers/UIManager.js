@@ -19,7 +19,7 @@ class UIManager {
     this.initializeEventListeners();
     this.iniializeToDoManager();
     this.loadProjects();
-    this.showTodoList(DEAFULT_PROJECT_NAME)
+    this.showTodoList(DEAFULT_PROJECT_NAME);
   }
 
   iniializeToDoManager() {
@@ -310,30 +310,34 @@ class UIManager {
 
     toDoWrapper.appendChild(titleDateDiv);
 
+    const iconsDiv = document.createElement("div");
+    iconsDiv.className = "icons-div";
+
     const priority = document.createElement("span");
     priority.textContent = `${todo.priority}`;
     priority.className = "priority-span";
-    toDoWrapper.appendChild(priority);
+    iconsDiv.appendChild(priority);
 
     const expandButton = document.createElement("img");
     expandButton.src = "/menu-down-outline.svg";
     expandButton.className = "expand-button";
     expandButton.setAttribute("data-id", todo.id);
-    toDoWrapper.appendChild(expandButton);
+    iconsDiv.appendChild(expandButton);
 
     const editButton = document.createElement("img");
     editButton.src = "/pencil.svg";
     editButton.className = "edit-to-do-button";
     editButton.setAttribute("data-id", todo.id);
-    toDoWrapper.appendChild(editButton);
+    iconsDiv.appendChild(editButton);
 
     const deleteButton = document.createElement("img");
     deleteButton.textContent = "Delete";
     deleteButton.className = "delete-to-do-button";
     deleteButton.src = "/trash-can-outline.svg";
     deleteButton.setAttribute("data-id", todo.id);
-    toDoWrapper.appendChild(deleteButton);
-
+    iconsDiv.appendChild(deleteButton);
+    
+    toDoWrapper.appendChild(iconsDiv);
     this.setCardBackground(todo, toDoWrapper);
     return toDoWrapper;
   }
