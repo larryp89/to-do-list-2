@@ -1,4 +1,4 @@
-import { ToDoItem } from "./todoItem";
+import { ToDoItem } from "../components/todoItem";
 import { ToDoManager } from "./ToDoManager";
 import { DialogManager } from "./DialogManager";
 import { FormManager } from "./FormManager";
@@ -271,7 +271,7 @@ class UIManager {
     const emptyDiv = document.createElement("h1");
     emptyDiv.textContent = "Nothing to see here!";
     const tumbleWeed = document.createElement("img");
-    tumbleWeed.src = "./tumbleweed.gif";
+    tumbleWeed.src = "/tumbleweed.gif";
     tumbleWeed.alt = "tumbleweed";
     MAINDIV.appendChild(emptyDiv);
     MAINDIV.append(tumbleWeed);
@@ -316,13 +316,13 @@ class UIManager {
     toDoWrapper.appendChild(priority);
 
     const expandButton = document.createElement("img");
-    expandButton.src = "./menu-down-outline.svg";
+    expandButton.src = "/menu-down-outline.svg";
     expandButton.className = "expand-button";
     expandButton.setAttribute("data-id", todo.id);
     toDoWrapper.appendChild(expandButton);
 
     const editButton = document.createElement("img");
-    editButton.src = "./pencil.svg";
+    editButton.src = "/pencil.svg";
     editButton.className = "edit-to-do-button";
     editButton.setAttribute("data-id", todo.id);
     toDoWrapper.appendChild(editButton);
@@ -330,7 +330,7 @@ class UIManager {
     const deleteButton = document.createElement("img");
     deleteButton.textContent = "Delete";
     deleteButton.className = "delete-to-do-button";
-    deleteButton.src = "./trash-can-outline.svg";
+    deleteButton.src = "/trash-can-outline.svg";
     deleteButton.setAttribute("data-id", todo.id);
     toDoWrapper.appendChild(deleteButton);
 
@@ -365,9 +365,9 @@ class UIManager {
 
   toggleImage(img) {
     if (img.src.endsWith("menu-down-outline.svg")) {
-      img.src = "./menu-up.svg";
+      img.src = "/menu-up.svg";
     } else {
-      img.src = "./menu-down-outline.svg";
+      img.src = "/menu-down-outline.svg";
     }
   }
 
@@ -391,10 +391,10 @@ class UIManager {
     projectSpan.textContent = project;
     const projectButton = document.createElement("img");
     projectButton.className = "current-project-button";
-    projectButton.src = "./pen-plus.svg";
+    projectButton.src = "/pen-plus.svg";
     const trashButton = document.createElement("img");
     trashButton.className = "trash-project-button";
-    trashButton.src = "./trash-can-outline.svg";
+    trashButton.src = "/trash-can-outline.svg";
     container.appendChild(projectSpan);
     container.appendChild(projectButton);
     container.append(trashButton);
