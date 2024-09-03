@@ -1,0 +1,30 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Change this to your default branch if it's not 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Build and Deploy
+        run: |
+          npm install
+          npm run build
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git remote set-url origin git@github.com:larryp89/to-do-list-2.git
+          git add -A
+          git commit -m "Deploy to GitHub Pages"
+          git push origin gh-pages
