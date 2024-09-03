@@ -10,7 +10,7 @@ class ToDoManager {
       ? JSON.parse(localStorage.getItem("projects"))
       : [];
     this.currentProject = null;
-    this.loadDefaultData()
+    this.loadDefaultData();
   }
 
   loadDefaultData() {
@@ -18,6 +18,7 @@ class ToDoManager {
       // Add default projects
       this.addProject("Home");
       this.addProject("Work");
+      this.addProject("Gym");
 
       // Add default todos
       this.addToDo({
@@ -28,11 +29,25 @@ class ToDoManager {
         project: "Home",
       });
       this.addToDo({
-        name: "Complete report",
-        description: "Finish the quarterly report",
+        name: "Budget report",
+        description: "Get that report on Johnson's desk, pronto!",
         date: "2024-09-05",
         priority: "Medium",
         project: "Work",
+      });
+      this.addToDo({
+        name: "Leg day",
+        description: "Go hard or go home, brah!",
+        date: "2024-10-05",
+        priority: "High",
+        project: "Gym",
+      });
+      this.addToDo({
+        name: "Chest",
+        description: "Bench baby 3reps 20kg!",
+        date: "2024-10-05",
+        priority: "High",
+        project: "Gym",
       });
     }
   }
