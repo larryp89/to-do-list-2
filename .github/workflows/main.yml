@@ -10,24 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v3 # Updated to the latest version
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.4 # Updated to the latest version
         with:
-          node-version: 20
-          cache: "npm"
-      - name: Install dependencies
-        run: npm ci
-      - name: Build
-        run: npm run build
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload dist folder
-          path: "./dist"
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Build and Deploy
+        run: |
+          npm install
+          npm run build
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git remote set-url origin git@github.com:larryp89/to-do-list-2.git
+          git add -A
+          if git diff-index --quiet HEAD; then
+            echo "No changes to commit"
+          else
+            git commit -m "Deploy to GitHub Pages"
+            git push origin gh-pages
