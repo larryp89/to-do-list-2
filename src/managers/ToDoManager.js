@@ -18,16 +18,11 @@ class ToDoManager {
       // Add default projects
       this.addProject("Home");
       this.addProject("Work");
-      this.addProject("Gym");
+      this.addProject("Eat");
+      this.addProject("Sleep");
+      this.addProject("Repeat");
 
       // Add default todos
-      this.addToDo({
-        name: "Buy groceries",
-        description: "Milk, Bread, Eggs",
-        date: "2024-09-04",
-        priority: "High",
-        project: "Home",
-      });
       this.addToDo({
         name: "Budget report",
         description: "Get that report on Johnson's desk, pronto!",
@@ -36,18 +31,25 @@ class ToDoManager {
         project: "Work",
       });
       this.addToDo({
-        name: "Leg day",
-        description: "Go hard or go home, brah!",
-        date: "2024-10-05",
+        name: "Buy groceries",
+        description: "Milk, Bread, Eggs",
+        date: "2024-09-04",
         priority: "High",
-        project: "Gym",
+        project: "Eat",
       });
       this.addToDo({
-        name: "Chest",
-        description: "Bench baby 3reps 20kg!",
-        date: "2024-10-05",
+        name: "Get new earplugs",
+        description: "The ones with the squishy sides",
+        date: "2024-09-04",
         priority: "High",
-        project: "Gym",
+        project: "Sleep",
+      });
+      this.addToDo({
+        name: "Washing",
+        description: "It's getting a bit messy around here",
+        date: "2024-09-04",
+        priority: "High",
+        project: "Repeat",
       });
     }
   }
