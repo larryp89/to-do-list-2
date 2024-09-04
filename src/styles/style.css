@@ -31,6 +31,14 @@ h3 {
 
 h2 {
   text-decoration: underline;
+  text-decoration-color: rgb(127, 181, 192); /* Color for the underline */
+  text-decoration-thickness: 2px; /* Thickness of the underline */
+  font-size: 2rem; /* Increase font size */
+  font-weight: 600; /* Bold weight for emphasis */
+  color: rgb(30, 30, 30); /* Darker text color for better readability */
+  margin: 20px 0; /* Margin to provide space above and below */
+  padding-bottom: 10px; /* Padding to ensure space between text and underline */
+  text-align: center; /* Center-align the text */
 }
 
 h3 {
@@ -158,6 +166,20 @@ form input[type="date"] {
   font-size: 1rem;
   width: 100%;
   box-sizing: border-box;
+}
+
+form input[type="text"]:invalid,
+form textarea:invalid,
+form select:invalid,
+form input:invalid[type="date"] {
+  border: 1px solid red;
+}
+
+form input[type="text"]:valid,
+form textarea:valid,
+form select:valid,
+form input:valid[type="date"] {
+  border: 1px solid green;
 }
 
 form textarea {
@@ -324,3 +346,8 @@ form textarea {
   border: 3px solid black;
 }
 
+#gif {
+  width: 50rem;
+  position: relative;
+  left: 100px;
+}

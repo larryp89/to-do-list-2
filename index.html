@@ -24,17 +24,17 @@
       <dialog class="to-do-dialog">
         <form class="add-to-do-form" action="">
           <label for="title">Title</label>
-          <input type="text" id="title" />
+          <input type="text" id="title" required />
           <label for="details">Details</label>
-          <textarea name="details" id="details"></textarea>
+          <textarea name="details" id="details" required></textarea>
           <label for="priority">Priority</label>
           <select name="priority" id="priority">
             <option value="High">High</option>
             <option value="Medium" selected>Medium</option>
             <option value="Low">Low</option>
           </select>
-          <label for="due-date">Due on</label>
-          <input type="date" id="due-date" />
+          <label for="due-date">Due on </label>
+          <input type="date" id="due-date" required />
           <div class="button-container">
             <button class="submit-to-do">Submit</button>
             <button class="cancel-to-do">Cancel</button>
@@ -72,6 +72,7 @@
           <dialog class="project-dialog">
             <form class="project-form" action="">
               <input
+                required
                 type="text"
                 placeholder="Project name"
                 class="project-name"
@@ -87,9 +88,9 @@
         <dialog class="project-to-do-dialog">
           <form class="project-add-to-do-form" action="">
             <label for="title">Title</label>
-            <input type="text" id="title" />
+            <input type="text" id="title" required />
             <label for="details">Details</label>
-            <textarea name="details" id="details"></textarea>
+            <textarea name="details" id="details" required></textarea>
             <label for="priority">Priority</label>
             <select name="priority" id="priority">
               <option value="High">High</option>
@@ -97,7 +98,7 @@
               <option value="Low">Low</option>
             </select>
             <label for="due-date">Due on</label>
-            <input type="date" id="due-date" />
+            <input type="date" id="due-date" required />
             <div class="button-container">
               <button class="submit-project-to-do">Submit</button>
               <button class="cancel-project-to-do">Cancel</button>

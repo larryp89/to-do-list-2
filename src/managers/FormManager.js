@@ -9,6 +9,12 @@ class FormManager {
   }
 
   getFormData(form) {
+    // Check if the form is valid
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return false 
+    }
+
     const title = form.querySelector("#title").value;
     const details = form.querySelector("#details").value;
     const priority = form.querySelector("#priority").value;
@@ -34,7 +40,7 @@ class FormManager {
   }
 
   getProjectFormData() {
-    return this.getFormData(this.projectForm) ;
+    return this.getFormData(this.projectForm);
   }
 
   clearForm(form) {
@@ -50,6 +56,7 @@ class FormManager {
     titleLabel.setAttribute("for", "title");
     titleLabel.textContent = "Title";
     const titleInput = document.createElement("input");
+    titleInput.setAttribute("required", "");
     titleInput.setAttribute("type", "text");
     titleInput.setAttribute("id", "title");
     titleInput.value = todo.name;
@@ -61,6 +68,7 @@ class FormManager {
     const detailsInput = document.createElement("textarea");
     detailsInput.setAttribute("name", "details");
     detailsInput.setAttribute("id", "details");
+    detailsInput.setAttribute("required", "");
     detailsInput.value = todo.description;
 
     // Priority
@@ -97,6 +105,7 @@ class FormManager {
     dueDateLabel.setAttribute("for", "due-date");
     dueDateLabel.textContent = "Due on";
     const dateSelect = document.createElement("input");
+    dateSelect.setAttribute("required", "");
     dateSelect.setAttribute("type", "date");
     dateSelect.setAttribute("id", "due-date");
     const toDoDate = new Date(todo.date).toISOString().split("T")[0];

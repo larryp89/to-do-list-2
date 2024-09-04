@@ -1,3 +1,6 @@
+// TODO: error handling
+// TODO: add "complete" status and counter for todos in each section
+
 import { ToDoItem } from "../components/todoItem";
 import { ToDoManager } from "./ToDoManager";
 import { DialogManager } from "./DialogManager";
@@ -80,6 +83,9 @@ class UIManager {
 
       if (event.target.matches(".submit-to-do")) {
         event.preventDefault();
+        if (!this.formManager.getAddFormData()) {
+          return;
+        }
         const { title, details, priority, date } =
           this.formManager.getAddFormData();
         const newTodo = new ToDoItem(title, details, priority, date);
@@ -117,6 +123,10 @@ class UIManager {
         this.dialogManager.closeDialog(this.dialogManager.addProjectDialog);
         const projectName = this.formManager.getProjectName();
 
+        if (!projectName) {
+          alert("Project name is required.");
+          return;
+        }
         if (this.toDoManager.checkDuplicate(projectName)) {
           alert("Project already exists");
           this.formManager.clearForm(this.formManager.projectName);
@@ -130,6 +140,7 @@ class UIManager {
 
         // make project container
         this.makeProjectContainer(projectName);
+        this.showTodoList(this.toDoManager.getCurrentProject());
       }
 
       if (event.target.matches(".current-project-button")) {
@@ -195,6 +206,16 @@ class UIManager {
       if (event.target.matches(".edit-to-do-button")) {
         const id = parseInt(event.target.getAttribute("data-id"));
         const toDo = this.toDoManager.allToDos[id];
+
+        // Validate update form
+        if (
+          this.formManager.updateToDoForm &&
+          !this.formManager.updateToDoForm.checkValidity()
+        ) {
+          this.formManager.updateToDoForm.reportValidity();
+          return;
+        }
+
         const updateForm = this.formManager.createUpdateForm(toDo);
         const dialog = this.dialogManager.generateUpdateDialog();
         dialog.appendChild(updateForm);
@@ -214,6 +235,9 @@ class UIManager {
       if (event.target.matches(".update-button")) {
         event.preventDefault();
         const id = parseInt(event.target.getAttribute("data-id"));
+        if(!this.formManager.getUpdateFormData()){
+          return
+        }
         const { title, details, priority, date } =
           this.formManager.getUpdateFormData();
         this.toDoManager.editToDo(id, title, details, date, priority);
@@ -269,8 +293,10 @@ class UIManager {
   showEmpty() {
     this.clearPage();
     const emptyDiv = document.createElement("h1");
+    this.setHeader();
     emptyDiv.textContent = "Nothing to see here!";
     const tumbleWeed = document.createElement("img");
+    tumbleWeed.id = "gif";
     tumbleWeed.src = "./tumbleweed.gif";
     tumbleWeed.alt = "tumbleweed";
     MAINDIV.appendChild(emptyDiv);
@@ -336,7 +362,7 @@ class UIManager {
     deleteButton.src = "./trash-can-outline.svg";
     deleteButton.setAttribute("data-id", todo.id);
     iconsDiv.appendChild(deleteButton);
-    
+
     toDoWrapper.appendChild(iconsDiv);
     this.setCardBackground(todo, toDoWrapper);
     return toDoWrapper;
